@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7785855ef481f514d898492cccc600a4, type: 3}
   m_Name: HealthPickup
   m_EditorClassIdentifier: 
-  itemName: 
-  itemIcon: {fileID: 0}
-  type: 0
+  itemName: HealthPickup
+  itemIcon: {fileID: 21300050, guid: 309ac3eb4cc441349b63128366ca98b6, type: 3}
+  type: 2
   actionType: 0
-  isStackable: 0
+  isStackable: 1

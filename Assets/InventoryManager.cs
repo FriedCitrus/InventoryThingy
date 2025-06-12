@@ -5,6 +5,8 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     public InventorySlot[] inventorySlots; // Array of inventory slots to hold items
+    public InventorySlot TorsoSlot; // Reference to the torso slot for equipping items
+    public InventorySlot HelmetSlot; // Reference to the helmet slot for equipping items
     public GameObject itemPrefab; // Prefab for the inventory item
 
 
@@ -14,7 +16,7 @@ public class InventoryManager : MonoBehaviour
         {
             InventorySlot slot = inventorySlots[i];
             InventoryItem ItemSlot = slot.GetComponentInChildren<InventoryItem>();
-            if (ItemSlot != null && ItemSlot.item == item && ItemSlot.item.isStackable && ItemSlot.itemCount < 30)
+            if (ItemSlot != null && ItemSlot.itemref == item && ItemSlot.itemref.isStackable && ItemSlot.itemCount < 30)
             {
                 // If the item is stackable and already exists in the inventory, increment the count
                 ItemSlot.itemCount++; // Increment the item count

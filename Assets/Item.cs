@@ -15,8 +15,10 @@ public class Item : ScriptableObject
 }
 public enum ItemType
 {
-    Ammo,
-    Equips,
+    PistolAmmo,
+    RifleAmmo,
+    Torso,
+    Helmet,
     Health
 }
 

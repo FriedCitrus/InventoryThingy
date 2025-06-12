@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7785855ef481f514d898492cccc600a4, type: 3}
   m_Name: TShirt
   m_EditorClassIdentifier: 
-  itemName: Hat
-  itemIcon: {fileID: 21300000, guid: eab028cfd8d865c4ea8694af64965bbd, type: 3}
+  itemName: TShirt
+  itemIcon: {fileID: 21300000, guid: 9542715e539a7174dad178888098c95f, type: 3}
   type: 1
   actionType: 1
   isStackable: 0
