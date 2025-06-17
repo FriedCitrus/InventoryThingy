@@ -8,6 +8,8 @@ public class Enemy : Entity
 
     // Scans inventory and updates player stats based on items
 
+    public GameObject WinScreen; // Reference to the win screen UI
+
     [SerializeField]
     private WeaponType currentWeaponType = WeaponType.Pistol; // Default weapon type
 
@@ -30,6 +32,7 @@ public class Enemy : Entity
     public override void Die()
     {
         Debug.Log($"{entityName} has died.");
+        WinScreen.SetActive(true); // Show the win screen UI
         Destroy(gameObject); // Destroy the enemy game object
     }
 

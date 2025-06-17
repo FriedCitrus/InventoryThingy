@@ -6,9 +6,17 @@ public class DemoScript : MonoBehaviour
 {
     public InventoryManager inventoryItemManager;
     public Item[] itemToAdd;
+    
+    Player player;
+    
 
     public void PickupItem(int itemIndex)
     {
-       inventoryItemManager.AddItem(itemToAdd[itemIndex]);
+        for (int i = 0; i < 20; i++)
+        {
+            inventoryItemManager.AddItem(itemToAdd[itemIndex]);
+        }
+
+
     }
 }

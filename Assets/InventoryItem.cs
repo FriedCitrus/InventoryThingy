@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     [Header("Inventory Item Properties")]
     public UnityEngine.UI.Image image; // Reference to the Image component for displaying the item
@@ -23,7 +23,18 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     [HideInInspector] public int itemCount = 1;
     public GameObject itemInfoPanel; // Assign in Inspector
 
-    
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            // Only open the item info panel on right click
+            if (itemInfoPanel != null)
+            {
+                itemInfoPanel.SetActive(true);
+            }
+        }
+    }
+
     public void InitializeItem(Item newItem)
     {
         itemref = newItem; // Assign the new item to the inventory item
@@ -59,7 +70,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         // Code to handle the end of a drag operation
         image.raycastTarget = true; // Re-enable raycast target to allow interaction with the item
         Debug.Log("Drag ended on: " + gameObject.name);
-        //transform.SetParent(parentAfterDrag); // Return the item to its original parent
+        transform.SetParent(parentAfterDrag); // Return the item to its original parent
         player.ScanInventoryAndUpdateStats(); // Update player stats after the drag operation
         
     }
