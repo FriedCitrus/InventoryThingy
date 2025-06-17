@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Vest
   itemIcon: {fileID: 21300000, guid: 56aa786fe0a99b940949b588e9243e4d, type: 3}
-  type: 1
+  type: 2
   actionType: 1
   isStackable: 0
+  Armour: 45

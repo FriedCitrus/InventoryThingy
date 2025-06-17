@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
@@ -20,7 +21,9 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     [HideInInspector] public Transform parentAfterDrag;
     [HideInInspector] public int itemCount = 1;
+    public GameObject itemInfoPanel; // Assign in Inspector
 
+    
     public void InitializeItem(Item newItem)
     {
         itemref = newItem; // Assign the new item to the inventory item
@@ -56,9 +59,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         // Code to handle the end of a drag operation
         image.raycastTarget = true; // Re-enable raycast target to allow interaction with the item
         Debug.Log("Drag ended on: " + gameObject.name);
-        transform.SetParent(parentAfterDrag); // Return the item to its original parent
+        //transform.SetParent(parentAfterDrag); // Return the item to its original parent
         player.ScanInventoryAndUpdateStats(); // Update player stats after the drag operation
         
     }
 }
-

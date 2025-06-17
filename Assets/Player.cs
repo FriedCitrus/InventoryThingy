@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting.AssemblyQualifiedNameParser;
 using UnityEngine;
 
 
@@ -12,8 +13,34 @@ public class Player : Entity
     [SerializeField]
     private WeaponType currentWeaponType = WeaponType.Pistol; // Default weapon type
 
+#region Inventory Behaviour
+
     // Scans inventory and updates player stats based on items
     public void ScanInventoryAndUpdateStats()
+    {
+        InvCheck(); // Check inventory items before equipping
+        EquipCheck(); // Check equipped items after scanning inventory
+    }
+
+    public void EquipCheck()
+    {
+        armour = 0; // Reset armour value before checking equipped items
+        foreach (var slot in inventory.EquipSlots)
+        {
+            if (slot.transform.childCount == 0)
+            {
+                Debug.Log("No items equipped in this slot.");
+                continue; // Skip to the next slot if no item is equipped
+            }
+            InventoryItem equipItem = slot.GetComponentInChildren<InventoryItem>();
+            if (equipItem != null)
+            {
+                Debug.Log("Equipped item: " + equipItem.name);
+                armour += equipItem.itemref.Armour; // Update armour value from equipped item
+            }
+        }
+    }
+    public void InvCheck()
     {
         foreach (var slot in inventory.inventorySlots)
         {
@@ -24,26 +51,28 @@ public class Player : Entity
                 if (item != null)
                 {
                     Debug.Log("Found item: " + item.name);
-                    if (item.itemref.type == ItemType.PistolAmmo)
+                    switch (item.itemref.type)
                     {
-                        Debug.Log("Pistol ammo found: " + item.itemCount);
+                        case ItemType.PistolAmmo:
+                            pistolAmmo = item.itemCount; // Add pistol ammo count
+                            Debug.Log($"Pistol ammo updated: {pistolAmmo}");
+                            break;
+                        case ItemType.RifleAmmo:
+                            rifleAmmo = item.itemCount; // Add rifle ammo count
+                            Debug.Log($"Rifle ammo updated: {rifleAmmo}");
+                            break;
+                        case ItemType.Health:
+                            HealthPacks = item.itemCount; // Add health packs count
+                            Debug.Log("Health packs updated: " + HealthPacks);
+                            break;
                     }
+
                 }
             }
         }
-        if (inventory.TorsoSlot.transform.childCount != 0)
-        {
-            Debug.Log("Torso slot is occupied. Checking for torso item.");
-            InventoryItem torsoItem = inventory.TorsoSlot.GetComponentInChildren<InventoryItem>();
-            if (torsoItem != null && torsoItem.itemref.type == ItemType.Torso)
-            {
-                maxHealth += 20; // Increase max health by 20 for torso item
-                health += 20; // Also increase current health by 20
-                Debug.Log("Torso equipped. Max health increased to: " + maxHealth);
-            }
-        }
-        Debug.Log(inventory.TorsoSlot.transform.childCount + " items in Torso slot.");
     }
+
+#endregion
 
     public void Start()
     {
@@ -63,7 +92,8 @@ public class Player : Entity
 
     public override void TakeDamage(int damage)
     {
-        health -= damage;
+        health -= (int)(damage*(1 - (armour / 100f))); // Apply armour reduction to damage
+        HealthBar.fillAmount = Mathf.Clamp01(health / (float)maxHealth); // Update health bar fill amount
         if (health <= 0)
         {
             Die();
@@ -82,11 +112,23 @@ public class Player : Entity
         {
             if (WeaponType.Pistol == currentWeaponType)
             {
+                if (pistolAmmo <= 0)
+                {
+                    Debug.Log($"{entityName} has no Pistol Ammo left!");
+                    return; // Exit if no ammo is available
+                }
+                pistolAmmo--; // Decrease ammo count
                 Debug.Log($"{entityName} deals 5 damage with Pistol.");
                 enemy.TakeDamage(5); // Deal damage to the enemy
             }
             else if (WeaponType.Rifle == currentWeaponType)
             {
+                if (rifleAmmo <= 0)
+                {
+                    Debug.Log($"{entityName} has no Rifle Ammo left!");
+                    return; // Exit if no ammo is available
+                }
+                rifleAmmo--; // Decrease ammo count
                 Debug.Log($"{entityName} deals 9 damage with Rifle.");
                 enemy.TakeDamage(9); // Deal damage to the enemy
             }
@@ -95,6 +137,12 @@ public class Player : Entity
 
     public override void Heal()
     {
+        if (HealthPacks <= 0)
+        {
+            Debug.Log($"{entityName} has no Health Packs left!");
+            return; // Exit if no health packs are available
+        }
+        HealthPacks--; // Decrease health packs count
         health += recoverHealth;
 
         if (health > maxHealth)
@@ -102,6 +150,7 @@ public class Player : Entity
             health = maxHealth; // Ensure health does not exceed maxHealth
         }
         Debug.Log($"{entityName} healed for {recoverHealth}. Current health: {health}");
+        HealthBar.fillAmount = Mathf.Clamp01(health / (float)maxHealth); // Update health bar fill amount
     }
 
 }

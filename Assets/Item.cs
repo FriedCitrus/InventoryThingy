@@ -11,6 +11,7 @@ public class Item : ScriptableObject
     public ItemType type; // Type of the item (e.g., Ammo, Equips, Health)
     public ActionType actionType; // Type of action associated with the item (e.g., Use, Wear, Buy)
     public bool isStackable; // Indicates if the item can be stacked in the inventory
+    public int Armour;
 
 }
 public enum ItemType

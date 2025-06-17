@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: TShirt
   itemIcon: {fileID: 21300000, guid: 9542715e539a7174dad178888098c95f, type: 3}
-  type: 1
+  type: 2
   actionType: 1
   isStackable: 0
+  Armour: 15

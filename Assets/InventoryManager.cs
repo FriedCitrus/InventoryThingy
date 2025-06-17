@@ -5,9 +5,11 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     public InventorySlot[] inventorySlots; // Array of inventory slots to hold items
-    public InventorySlot TorsoSlot; // Reference to the torso slot for equipping items
-    public InventorySlot HelmetSlot; // Reference to the helmet slot for equipping items
+
+    public InventorySlot[] EquipSlots; 
+
     public GameObject itemPrefab; // Prefab for the inventory item
+    
 
 
     public void AddItem(Item item)
@@ -38,7 +40,7 @@ public class InventoryManager : MonoBehaviour
 
         }
 
-        
+
     }
 
     public void SpawnItem(Item item, InventorySlot slot)

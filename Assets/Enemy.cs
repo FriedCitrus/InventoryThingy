@@ -6,8 +6,6 @@ public class Enemy : Entity
 {
     public Player player; // Reference to the player
 
-    public int HealthPacks; 
-
     // Scans inventory and updates player stats based on items
 
     [SerializeField]
@@ -21,10 +19,12 @@ public class Enemy : Entity
     public override void TakeDamage(int damage)
     {
         health -= damage;
+        HealthBar.fillAmount = Mathf.Clamp01(health / (float)maxHealth); // Update health bar fill amount
         if (health <= 0)
         {
             Die();
         }
+        DealDamage(); // Deal damage to the player after taking damage
     }
 
     public override void Die()
@@ -37,15 +37,18 @@ public class Enemy : Entity
     {
         if (player != null)
         {
+            // Randomly choose between Pistol and Rifle
+            currentWeaponType = (Random.value < 0.5f) ? WeaponType.Pistol : WeaponType.Rifle;
+
             if (WeaponType.Pistol == currentWeaponType)
             {
                 Debug.Log($"{entityName} deals 5 damage with Pistol.");
-                player.TakeDamage(5); // Deal damage to the enemy
+                player.TakeDamage(5);
             }
             else if (WeaponType.Rifle == currentWeaponType)
             {
                 Debug.Log($"{entityName} deals 9 damage with Rifle.");
-                player.TakeDamage(9); // Deal damage to the enemy
+                player.TakeDamage(9);
             }
         }
     }
